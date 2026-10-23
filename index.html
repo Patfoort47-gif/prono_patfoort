@@ -33,7 +33,7 @@
       <span class="brand-name">Bet<span>Master</span></span>
     </a>
     <nav aria-label="Navigation principale" class="tabs">
-      <button class="tab-button active" data-tab="matches"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/></svg>Matchs &amp; combinés</button><button class="tab-button" data-tab="standings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Classements</button><button class="tab-button" data-tab="predictions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-7"/></svg>Bilan des pronos</button><button class="tab-button" data-tab="community"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M2 20c1-5 3-7 6-7s5 2 6 7M14 14c4-1 6 1 7 5"/></svg>Communauté</button><button class="tab-button" data-tab="bankroll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/></svg>Mes paris</button>
+      <button class="tab-button active" data-tab="matches"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/></svg>Matchs &amp; combinés</button><button class="tab-button" data-tab="standings" aria-label="Classement des équipes" title="Classement des équipes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Classement des équipes</button><button class="tab-button" data-tab="predictions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-7"/></svg>Bilan des pronos</button><button class="tab-button" data-tab="community"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M2 20c1-5 3-7 6-7s5 2 6 7M14 14c4-1 6 1 7 5"/></svg>Communauté</button><button class="tab-button" data-tab="bankroll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/></svg>Mes paris</button>
     </nav>
     <div class="topbar-actions">
       <div class="topbar-bankroll"><small>BANKROLL</small><strong id="topbar-bankroll">1 000,00 €</strong></div>
@@ -137,7 +137,7 @@
     </section>
 
     <section id="standings" class="section-block tab-hidden" data-view="standings">
-      <div class="section-heading"><div><p class="eyebrow">COMPÉTITIONS</p><h2>Classements</h2></div><div class="mode-switch" role="group" aria-label="Type de classement"><button class="active" data-standings-mode="teams">Équipes</button><button data-standings-mode="scorers">Buteurs</button><button data-standings-mode="assists">Passeurs</button></div></div>
+      <div class="section-heading"><div><p class="eyebrow">COMPÉTITIONS</p><h2>Classement des équipes</h2></div><div class="mode-switch" role="group" aria-label="Type de classement"><button class="active" data-standings-mode="teams">Équipes</button><button data-standings-mode="scorers">Buteurs</button><button data-standings-mode="assists">Passeurs</button></div></div>
       <div class="scroller"><button class="scroll-btn prev" data-scroll="-1" aria-label="Compétitions précédentes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button><div class="filters" id="standings-leagues" role="group" aria-label="Choisir une compétition"></div><button class="scroll-btn next" data-scroll="1" aria-label="Compétitions suivantes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button></div>
       <div id="standings-body" class="standings-body card"></div>
     </section>
@@ -183,7 +183,7 @@
         <h3>Le site</h3>
         <button data-footer-nav="matches">Matchs</button>
         <button data-footer-nav="builder">Combiné intelligent</button>
-        <button data-footer-nav="standings">Classements</button>
+        <button data-footer-nav="standings">Classement des équipes</button>
         <button data-footer-nav="predictions">Bilan des pronostics</button>
         <button data-footer-nav="bankroll">Mes paris et bankroll</button>
         <button data-footer-nav="community">Challenges et communauté</button>
@@ -321,7 +321,7 @@
   <nav class="mobile-nav" aria-label="Navigation mobile">
     <button class="active" data-mobile-target="matches"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7l4 3-1.5 4.5h-5L8 10z"/></svg>Matchs</button>
     <button data-mobile-target="builder"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7h18v3a2 2 0 0 0 0 4v3H3v-3a2 2 0 0 0 0-4z"/></svg>Combiné<i id="mobile-ticket-count" hidden></i></button>
-    <button data-mobile-target="standings"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Classements</button>
+    <button data-mobile-target="standings" aria-label="Classement des équipes" title="Classement des équipes"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3v2a3 3 0 0 1-3 3M7 6H4v2a3 3 0 0 0 3 3"/></svg>Classement des équipes</button>
     <button data-mobile-target="predictions"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M7 15l4-4 3 2 5-7"/></svg>Bilans</button>
     <button data-mobile-target="community"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="3"/><circle cx="17" cy="9" r="2"/><path d="M2 20c1-5 3-7 6-7s5 2 6 7"/></svg>Club<i id="feed-dot-mobile" hidden></i></button>
     <button data-mobile-target="bankroll"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 19V5M4 19h16M8 15l4-4 3 3 5-6"/></svg>Mes paris</button>
