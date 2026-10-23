@@ -2,7 +2,7 @@
 // Décisions pures dans special.js ; ce fichier lit et écrit Supabase avec la clé service_role.
 import { leaguePoints, selectionResult } from '../model.js';
 import { championEligible, planRounds, specialStandings, tier } from '../special.js';
-import { seasonKey } from '../league.js';
+import { monthKey } from '../league.js';
 
 export async function syncSpecialRounds(admin, matches) {
   const leagues = await admin.selectAll('special_leagues', 'open=eq.true&select=id,kind,league_label,team_id');
@@ -31,12 +31,12 @@ export async function settleGridPicks(admin, results) {
 export function standingRows(leagueId, members, picks, month, now = new Date()) {
   const played = new Map();
   for (const pick of picks) played.set(pick.user_id, new Set([...(played.get(pick.user_id) ?? []), pick.round_id]));
-  const monthOf = date => seasonKey(date);
+  const monthOf = date => monthKey(date);
   return [['season', specialStandings(picks, members, 'season', monthOf)], [month, specialStandings(picks, members, month, monthOf)]]
     .flatMap(([scope, rows]) => rows.map(row => ({ league_id: leagueId, scope, user_id: row.user_id, points: row.points, picks: row.picks, wins: row.wins, roi: row.roi, rank: row.rank, played_rounds: played.get(row.user_id)?.size ?? 0, updated_at: now.toISOString() })));
 }
 export async function recomputeSpecialStandings(admin, now = new Date()) {
-  const month = seasonKey(now), leagues = await admin.selectAll('special_leagues', 'open=eq.true&select=id');
+  const month = monthKey(now), leagues = await admin.selectAll('special_leagues', 'open=eq.true&select=id');
   const [members, picks] = await Promise.all([admin.selectAll('league_members', 'select=league_id,user_id,joined_at'), admin.selectAll('special_picks', 'select=league_id,user_id,round_id,points,status,settled_at')]);
   let count = 0;
   for (const league of leagues) {

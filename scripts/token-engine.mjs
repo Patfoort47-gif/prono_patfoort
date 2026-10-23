@@ -2,7 +2,7 @@
 // Calculs purs dans rewards.js ; les gains sont écrits dans token_ledger (clé unique par raison et par joueur : idempotent).
 import { streakState } from '../model.js';
 import { SPECIAL_MONTH_TOKENS, divisionDifficulty, featsOf, piggyBank, rankPrize, seasonReward } from '../rewards.js';
-import { divisionIndex, seasonKey } from '../league.js';
+import { divisionIndex, seasonKey, seasonDates, monthKey } from '../league.js';
 import { entrySequences, group } from './xp-engine.mjs';
 
 // Séries et tirelires de la saison : une ligne par joueur et par ligue ('general' ou identifiant de ligue spéciale).
@@ -47,7 +47,7 @@ export function planMonthlyPrizes({ league, month, standings }) {
 
 const DAY = 864e5;
 export async function updateStreaks(admin, now = new Date()) {
-  const season = seasonKey(now), since = new Date(now.getTime() - 40 * DAY).toISOString();
+  const season = seasonKey(now), since = `${seasonDates(season).start}T00:00:00+02:00`;
   const [entries, bets, dailyPicks, specialPicks, shieldRows] = await Promise.all([
     admin.selectAll('league_entries', `league=eq.general&season=eq.${season}&select=id,user_id,bet_id,daily_pick_id,points,settled_at`),
     admin.selectAll('bets', `settled_at=gte.${since}&select=id,odds`), admin.selectAll('daily_picks', `placed_at=gte.${since}&select=id,odd`),
@@ -82,7 +82,7 @@ export async function payGeneralSeasons(admin, now = new Date()) {
 
 // Fin de compétition des ligues spéciales et primes mensuelles.
 export async function paySpecialLeagues(admin, now = new Date()) {
-  const today = now.toISOString().slice(0, 10), current = seasonKey(now), leagues = await admin.selectAll('special_leagues', 'open=eq.true&select=id,season_start,season_end,difficulty');
+  const today = now.toISOString().slice(0, 10), current = monthKey(now), leagues = await admin.selectAll('special_leagues', 'open=eq.true&select=id,season_start,season_end,difficulty');
   let paid = 0;
   for (const league of leagues) {
     const standings = await admin.selectAll('special_standings', `league_id=eq.${league.id}&select=user_id,scope,picks,rank`);

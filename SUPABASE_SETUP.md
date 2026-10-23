@@ -30,3 +30,6 @@ La page « Rejoindre le club » propose « Continuer avec Google ». Pour l'acti
 3. Dans **Authentication > URL Configuration**, vérifiez que l'adresse GitHub Pages du site figure dans les URL de redirection autorisées (étape 2 ci-dessus).
 
 Le secret client Google reste dans Supabase : il n'est jamais écrit dans le dépôt. Sans cette configuration, le bouton Google affiche une erreur et la connexion par email reste disponible. Dans **Authentication > Sign In / Providers**, vérifiez aussi que la confirmation d'email est activée.
+
+### BET-78 · Saisons de football
+Après V19, exécuter `supabase-v20-schema.sql`, puis lancer la synchronisation habituelle. La ligue générale utilise la clé `AAAA-AAAA` (1er juillet au 30 juin, Paris). Les points de l’année sportive courante sont rattachés à cette clé sans duplication, le dernier groupe est repris ; les classements et résultats mensuels passés restent consultables. Les anciennes saisons mensuelles ouvertes sont archivées sans nouvelle montée/descente. Les clôtures suivantes ont lieu après le 30 juin. Les mois des primes de compétitions et les quotas hebdomadaires restent distincts des saisons. Les dates propres aux compétitions restent dans `special_leagues.season_start/season_end` et doivent être mises à jour pour chaque édition.

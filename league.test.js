@@ -58,8 +58,8 @@ test('les échelons trop petits sont fusionnés et les échelons fermés se vide
   const {moves}=L.closeSeason([...mk(40,4),...mk(5,9,{group:'B',prefix:'s'})]);assert.ok(moves.filter(m=>m.id.startsWith('s')).every(m=>m.to<9));
   const crowd=L.closeSeason([...mk(30,15),...mk(30,14,{group:'B',prefix:'e'})]).moves;assert.ok(crowd.every(m=>m.to<=14),'Champions fermé sous 300 joueurs actifs');
 });
-test('la saison est le mois civil de Paris et le barrage se joue sur le dernier week-end',()=>{
-  assert.equal(L.seasonKey('2026-10-31T23:30:00Z'),'2026-11');assert.equal(L.seasonKey('2026-10-31T22:30:00Z'),'2026-10');assert.equal(L.nextSeason('2026-12'),'2027-01');assert.equal(L.previousSeason('2027-01'),'2026-12');
+test('les archives mensuelles restent lisibles et le mois est calculé à Paris et le barrage se joue sur le dernier week-end',()=>{
+  assert.equal(L.monthKey('2026-10-31T23:30:00Z'),'2026-11');assert.equal(L.monthKey('2026-10-31T22:30:00Z'),'2026-10');assert.equal(L.nextSeason('2026-12'),'2027-01');assert.equal(L.previousSeason('2027-01'),'2026-12');
   assert.deepEqual(L.lastWeekend('2026-10'),['2026-10-24','2026-10-25']);assert.deepEqual(L.lastWeekend('2026-11'),['2026-11-28','2026-11-29']);assert.deepEqual(L.lastWeekend('2026-05'),['2026-05-30','2026-05-31']);
 });
 test('le classement de saison additionne les points, donne la forme et applique la règle des 50 % de défis',()=>{
@@ -85,3 +85,13 @@ test('le plan de clôture d’une saison est complet, idempotent et rattache cha
   assert.ok(plan.results.filter(r=>r.outcome==='PROMU').every(r=>r.to_echelon>r.from_echelon));
 });
 test('libellé de fin de saison et déblocages de division',()=>{assert.equal(L.outcomeLabel({outcome:'PROMU'}),'PROMU');assert.equal(L.outcomeLabel({outcome:'RELEGUE'}),'RELÉGUÉ');assert.equal(L.outcomeLabel({outcome:'MAINTENU'}),'MAINTENU');assert.deepEqual(L.unlocksFor(6),['couronne']);assert.deepEqual(L.unlocksFor(0),[])});
+
+test('BET-78 : saison de football, limites de Paris et archives',()=>{
+  assert.equal(L.seasonKey('2026-06-30T21:59:59Z'),'2025-2026');
+  assert.equal(L.seasonKey('2026-06-30T22:00:00Z'),'2026-2027');
+  assert.equal(L.seasonKey('2027-02-01T00:00:00Z'),'2026-2027');
+  assert.equal(L.nextSeason('2026-2027'),'2027-2028');assert.equal(L.previousSeason('2026-2027'),'2025-2026');
+  assert.deepEqual(L.seasonDates('2026-2027'),{start:'2026-07-01',end:'2027-06-30'});
+  assert.deepEqual(L.lastWeekend('2026-2027'),['2027-06-26','2027-06-27']);
+  assert.equal(L.seasonLabel('2026-2027'),'Saison 2026 / 2027');assert.match(L.seasonLabel('2026-10'),/octobre 2026/);
+});

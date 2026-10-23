@@ -162,14 +162,17 @@ export function outcomeLabel(move) { return move.outcome === 'PROMU' ? 'PROMU' :
 export const DIVISION_UNLOCKS = { 2: ['socle argent'], 3: ['maillot or'], 4: ['cheveux vert citron'], 6: ['couronne'] };
 export const unlocksFor = division => DIVISION_UNLOCKS[division] ?? [];
 
-// Saisons : mois civil de Paris au format AAAA-MM.
+// BET-78 : saison de football de la ligue générale, du 1er juillet au 30 juin (Paris).
+// Les anciennes clés mensuelles restent lisibles pour les archives.
 const parisDay = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Paris', year: 'numeric', month: '2-digit', day: '2-digit' });
-export const seasonKey = date => parisDay.format(new Date(date)).slice(0, 7);
-export const nextSeason = season => { const [year, month] = season.split('-').map(Number); return month === 12 ? `${year + 1}-01` : `${year}-${String(month + 1).padStart(2, '0')}`; };
-export const previousSeason = season => { const [year, month] = season.split('-').map(Number); return month === 1 ? `${year - 1}-12` : `${year}-${String(month - 1).padStart(2, '0')}`; };
-// Samedi et dimanche du dernier week-end complet de la saison : les défis du jour de ces deux jours départagent les barrages.
+export const monthKey = date => parisDay.format(new Date(date)).slice(0, 7);
+export const seasonKey = date => { const [year, month] = monthKey(date).split('-').map(Number), start = month >= 7 ? year : year - 1; return `${start}-${start + 1}`; };
+export const nextSeason = season => { const [year, end] = season.split('-').map(Number); return end > 100 ? `${year + 1}-${end + 1}` : end === 12 ? `${year + 1}-01` : `${year}-${String(end + 1).padStart(2, '0')}`; };
+export const previousSeason = season => { const [year, end] = season.split('-').map(Number); return end > 100 ? `${year - 1}-${end - 1}` : end === 1 ? `${year - 1}-12` : `${year}-${String(end - 1).padStart(2, '0')}`; };
+export const seasonDates = season => { const [year, end] = season.split('-').map(Number); return end > 100 ? { start: `${year}-07-01`, end: `${end}-06-30` } : { start: `${season}-01`, end: new Date(Date.UTC(year, end, 0)).toISOString().slice(0, 10) }; };
+export const seasonLabel = season => season?.length === 9 ? `Saison ${season.replace('-', ' / ')}` : new Date(`${season}-15T12:00:00Z`).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' });
 export function lastWeekend(season) {
-  const [year, month] = season.split('-').map(Number), last = new Date(Date.UTC(year, month, 0));
+  const last = new Date(`${seasonDates(season).end}T00:00:00Z`);
   last.setUTCDate(last.getUTCDate() - last.getUTCDay());
   const sunday = new Date(last), saturday = new Date(last);
   saturday.setUTCDate(saturday.getUTCDate() - 1);

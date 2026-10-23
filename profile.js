@@ -2,6 +2,7 @@
 // Les chiffres de la carte viennent de formules pures de model.js (cardAttributes, cardOverall) ; les données de la vue serveur public_player_card.
 import { avatarMarkup } from './avatar-view.js';
 import { sanitizeAvatar } from './avatar-config.js';
+import { seasonLabel } from './league.js';
 import { CATALOG } from './shop.js';
 const NS = 'http://www.w3.org/2000/svg';
 const TABS = [['overview', 'Aperçu'], ['seasons', 'Saisons'], ['badges', 'Trophées'], ['bets', 'Mes paris'], ['avatar', 'Avatar', true], ['account', 'Compte et confidentialité', true]];
@@ -16,7 +17,6 @@ export function initProfilePage(deps) {
   const dateLabel = value => value ? new Date(value).toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '';
   const color = echelon => echelon == null ? '#6b7280' : DIVISION_COLORS[divisionIndex(echelon)];
   const clubCrest = profile => profile.heart_club_id && /^\d{1,8}$/.test(profile.heart_club_id) ? safeLogo(`https://a.espncdn.com/i/teamlogos/soccer/500/${profile.heart_club_id}.png`) : null;
-  const seasonLabel = season => { const [year, month] = season.split('-').map(Number); return new Date(Date.UTC(year, month - 1, 15)).toLocaleDateString('fr-FR', { month: 'long', year: 'numeric', timeZone: 'UTC' }); };
 
   // Radar des 6 attributs : joueur affiché, moyenne du groupe, et vos propres attributs en mode comparaison.
   function radar(series) {
@@ -68,7 +68,7 @@ export function initProfilePage(deps) {
   }
   function seasons(info) {
     const rows = info.seasons.slice().reverse();
-    return rows.length ? `<ol class="season-line">${rows.map(row => { const move = row.to_echelon > (row.from_echelon ?? -1) && row.outcome === 'PROMU' ? 'up' : row.outcome === 'RELEGUE' ? 'down' : 'same'; return `<li class="${move}"><small>${seasonLabel(row.season)}</small><span>${divisionBadge(row.from_echelon)}<i aria-hidden="true">→</i>${divisionBadge(row.to_echelon)}</span><em>${row.group_rank ? `${row.group_rank}e sur ${row.group_size} · ` : ''}${Number(row.points).toFixed(1)} pts · ${{ PROMU: 'Promu', RELEGUE: 'Relégué', MAINTENU: 'Maintenu', PLACE: 'Placé', INACTIF: 'Inactif' }[row.outcome] ?? ''}</em></li>`; }).join('')}</ol>` : '<p class="empty">Aucune saison terminée pour le moment : la première clôture a lieu à la fin du mois.</p>';
+    return rows.length ? `<ol class="season-line">${rows.map(row => { const move = row.to_echelon > (row.from_echelon ?? -1) && row.outcome === 'PROMU' ? 'up' : row.outcome === 'RELEGUE' ? 'down' : 'same'; return `<li class="${move}"><small>${seasonLabel(row.season)}</small><span>${divisionBadge(row.from_echelon)}<i aria-hidden="true">→</i>${divisionBadge(row.to_echelon)}</span><em>${row.group_rank ? `${row.group_rank}e sur ${row.group_size} · ` : ''}${Number(row.points).toFixed(1)} pts · ${{ PROMU: 'Promu', RELEGUE: 'Relégué', MAINTENU: 'Maintenu', PLACE: 'Placé', INACTIF: 'Inactif' }[row.outcome] ?? ''}</em></li>`; }).join('')}</ol>` : '<p class="empty">Aucune saison terminée pour le moment : la première clôture a lieu à la fin de la saison de football.</p>';
   }
   function badges(info) {
     const earned = new Map(info.badges.map(item => [item.badge, item.earned_at]));

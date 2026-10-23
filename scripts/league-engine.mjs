@@ -1,9 +1,9 @@
 // Moteur de la ligue générale (BET-55) : classements recalculés après chaque règlement, clôture mensuelle des saisons.
 // La logique de décision est dans league.js (pure, testée) ; ce fichier lit et écrit Supabase avec la clé service_role.
-import { DIVISION_UNLOCKS, MASTER, closeSeason, computeStandings, divisionIndex, lastWeekend, nextSeason, seasonKey } from '../league.js';
+import { DIVISION_UNLOCKS, MASTER, closeSeason, computeStandings, divisionIndex, lastWeekend, nextSeason, seasonDates, seasonKey } from '../league.js';
 import { parisDate } from '../model.js';
 
-const lastDayOf = season => { const [year, month] = season.split('-').map(Number); return new Date(Date.UTC(year, month, 0)).toISOString().slice(0, 10); };
+const lastDayOf = season => seasonDates(season).end;
 
 export async function ensureSeason(admin, season) {
   await admin.upsert('league_seasons', [{ season }], 'season');
@@ -72,6 +72,6 @@ export async function closeFinishedSeasons(admin, now = new Date()) {
   await ensureSeason(admin, current);
   const open = await admin.select('league_seasons', 'status=eq.open&select=season&order=season.asc');
   let closed = 0;
-  for (const { season } of open) if (season < current && await closeOneSeason(admin, season)) closed++;
+  for (const { season } of open) if (season.length === 9 && season < current && await closeOneSeason(admin, season)) closed++;
   return closed;
 }
