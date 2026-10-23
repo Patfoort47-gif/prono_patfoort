@@ -24,6 +24,10 @@ begin
     -- Chronologie de placement : mêmes quotas et unicité par match que les nouveaux paris.
     for v_b in select * from public.bets b where b.user_id = lm.user_id and b.bet_type <> 'multiple'
       and (b.placed_at at time zone 'Europe/Paris')::date between lm.season_start and lm.season_end
+      and exists (select 1 from public.special_rounds r where r.league_id = lm.league_id
+        and (r.starts_at at time zone 'Europe/Paris')::date >= lm.season_start
+        and (r.ends_at at time zone 'Europe/Paris')::date <= lm.season_end
+        and r.match_ids @> (select jsonb_agg(s->>'matchId') from jsonb_array_elements(b.selections) s))
       and not exists (select 1 from public.special_picks sp where sp.bet_id = b.id and sp.league_id = lm.league_id)
       order by b.placed_at, b.id
     loop
