@@ -4,7 +4,7 @@
 import { CATALOG } from './shop.js';
 
 export const AVATAR_VERSION = 2;
-export const BODIES = [['m', 'Silhouette A'], ['f', 'Silhouette B']];
+export const BODIES = [['m', 'Homme'], ['f', 'Femme']];
 export const SKINS = [['#fbdcc4', 'Porcelaine'], ['#f0be98', 'Sable'], ['#d49a6a', 'Miel'], ['#a9693f', 'Cuivre'], ['#6b4128', 'Ébène']];
 export const FACES = [['round', 'Ronde'], ['oval', 'Ovale'], ['long', 'Allongée'], ['square', 'Carrée'], ['heart', 'Cœur'], ['wide', 'Large']];
 export const EYES = [['#3b82f6', 'Bleu'], ['#16a34a', 'Vert'], ['#8a5a2b', 'Noisette'], ['#3a2f2a', 'Brun'], ['#7b8794', 'Gris'], ['#9b5de5', 'Violet']];
