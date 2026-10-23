@@ -9,8 +9,8 @@ test('le lien direct #ligue-privee-BM-XXXX est lu et normalisé',()=>{
   assert.equal(C.parsePrivateHash('#ligue-privee-BM-AB2C'),'BM-AB2C');assert.equal(C.parsePrivateHash('#ligue-privee-bm-ab2c'),'BM-AB2C');assert.equal(C.parsePrivateHash('#ligue-privee-nope'),null);assert.equal(C.parsePrivateHash('#communaute'),null);assert.equal(C.parsePrivateHash(''),null);
   assert.equal(C.privateLink('BM-AB2C','https://x.github.io/app/'),'https://x.github.io/app/#ligue-privee-BM-AB2C');
 });
-test('limites : 5 ligues par joueur, 50 membres par ligue, nom de 3 à 30 caractères',()=>{
-  assert.equal(C.canCreateOrJoin(4),true);assert.equal(C.canCreateOrJoin(5),false);assert.equal(C.isFull(49),false);assert.equal(C.isFull(50),true);
+test('limites : ligues illimitées par joueur, 50 membres par ligue, nom de 3 à 30 caractères',()=>{
+  assert.equal(C.canCreateOrJoin(4),true);assert.equal(C.canCreateOrJoin(5000),true);assert.equal(C.isFull(49),false);assert.equal(C.isFull(50),true);
   assert.equal(C.validLeagueName('ab'),false);assert.equal(C.validLeagueName('  abc  '),true);assert.equal(C.validLeagueName('x'.repeat(31)),false);assert.equal(C.validLeagueName(null),false);
 });
 test('le propriétaire qui quitte transmet la ligue au plus ancien membre, le dernier qui part la supprime',()=>{

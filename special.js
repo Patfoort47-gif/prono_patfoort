@@ -3,7 +3,7 @@
 // à prévenir le joueur sur le ticket (« Ce pari compte pour ») et aux tests.
 import { tieBreak, weekKey } from './model.js';
 
-export const MAX_SPECIAL_LEAGUES = 3, CHAMPION_SHARE = .6, ONE_X_TWO = ['home', 'draw', 'away'];
+export const MAX_SPECIAL_LEAGUES = Infinity, CHAMPION_SHARE = .6, ONE_X_TWO = ['home', 'draw', 'away'];
 const text = value => String(value ?? '');
 
 // Un match appartient à une ligue compétition par son libellé de compétition, à une ligue club par l'identifiant ESPN d'une des deux équipes.

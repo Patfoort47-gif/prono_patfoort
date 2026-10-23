@@ -30,3 +30,6 @@ La page « Rejoindre le club » propose « Continuer avec Google ». Pour l'acti
 3. Dans **Authentication > URL Configuration**, vérifiez que l'adresse GitHub Pages du site figure dans les URL de redirection autorisées (étape 2 ci-dessus).
 
 Le secret client Google reste dans Supabase : il n'est jamais écrit dans le dépôt. Sans cette configuration, le bouton Google affiche une erreur et la connexion par email reste disponible. Dans **Authentication > Sign In / Providers**, vérifiez aussi que la confirmation d'email est activée.
+
+### BET-79 · Ligues sans limite
+Après V17, exécuter `supabase-v18-schema.sql`. Les ligues de clubs sont fermées et masquées, leurs résultats et adhésions sont conservés pour archive. Les ligues de compétitions et privées n’ont plus de limite par joueur ; les ligues privées gardent leur capacité de 50 membres. Les prix premium et les protections de solde restent en vigueur.
